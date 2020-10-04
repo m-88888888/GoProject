@@ -86,12 +86,12 @@ type InputJsonSchema struct {
 }
 
 func insert(jsonSchema *InputJsonSchema) {
-
 	// デーベースのオープン
 	db, err := sql.Open("mysql", "root:@tcp(localhost:3306)/hello")
 	// エラーハンドリング
 	if err != nil {
 		log.Fatal(err)
+		return
 	}
 	// クローズ処理の遅延実行
 	defer db.Close()
@@ -99,10 +99,11 @@ func insert(jsonSchema *InputJsonSchema) {
 	stmt, err := db.Prepare("INSERT INTO user(id, name) VALUES(?,?)")
 	if err != nil {
 		log.Fatal(err)
+		return
 	}
 	res, err := stmt.Exec(4, jsonSchema.Name)
 	if err != nil {
 		log.Fatal(err)
+		return
 	}
-
 }
